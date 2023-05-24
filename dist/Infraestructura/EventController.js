@@ -2,12 +2,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventController = void 0;
 class EventController {
-    constructor(getAllServices, createComic) {
+    constructor(getAllServices, createComic, buscar) {
         this.getAllServices = getAllServices;
         this.createComic = createComic;
+        this.buscar = buscar;
     }
     async getAllEvents(req, res) {
         const getComics = await this.getAllServices.execute();
+        res.json(getComics);
+    }
+    async getId(req, res) {
+        const { idcomic } = req.params;
+        const getComics = await this.buscar.buscarid(idcomic);
         res.json(getComics);
     }
     async createEvent(req, res) {

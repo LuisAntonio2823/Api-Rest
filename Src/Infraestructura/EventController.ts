@@ -1,12 +1,19 @@
 import { Request, Response } from 'express';
 import { GetAllEventsUseCase } from '../Aplicacion/GetAllEventsUseCase';
 import { CreateEventUseCase } from '../Aplicacion/CreateEventUseCase';
+import { busca } from '../Aplicacion/buscaid';
 
 export class EventController {
-  constructor(private getAllServices: GetAllEventsUseCase, private createComic: CreateEventUseCase ) {}
+  constructor(private getAllServices: GetAllEventsUseCase, private createComic: CreateEventUseCase, private buscar: busca ) {}
 
   async getAllEvents(req: Request, res: Response) {
     const getComics = await this.getAllServices.execute();
+    res.json(getComics);
+  }
+
+  async getId(req: Request, res: Response) {
+    const {idcomic} = req.params;
+    const getComics = await this.buscar.buscarid(idcomic);
     res.json(getComics);
   }
 

@@ -9,7 +9,30 @@ import {
 } from "mysql2/promise";
 
 export class ComicRepository implements EventService {
+  async getId(id: string): Promise<Event> {
+    return await new Promise((resolve, reject) => {
+      try {
+        const db = new Database();
+
+        const row = db.connection.query(
+          `SELECT * FROM comics.libreria WHERE idcomics = ${id}`,
+          (error: QueryError, events: Event) => {
+            if (events) {
+              resolve(events);
+            } else {
+              reject(error);
+            }
+          })
+      } catch (error) {
+        console.error("Error al conectar a la base de datos:", error);
+      }
+    });
+
+
+  }
+
   async getAllEvents(): Promise<Event[]> {
+    //Aqui se trabaja mis metodos
     return await new Promise((resolve, reject) => {
       try {
         //Instancia del objeto Database que contiene mi variable que hace la conexion a mi base de datos
@@ -36,6 +59,7 @@ export class ComicRepository implements EventService {
     return await new Promise((resolve, reject) => {
       try {
         const db = new Database();
+        /// Meter los parametros espera
         const inserted = db.connection.query(
           `INSERT INTO comics.libreria(nombre, año) VALUES ('${nombre}','${año}')`,
           (error: QueryError, comic: Event) => {

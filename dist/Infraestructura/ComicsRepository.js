@@ -3,7 +3,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComicRepository = void 0;
 const mysqlClient_1 = require("./mysqlClient");
 class ComicRepository {
+    async getId(id) {
+        return await new Promise((resolve, reject) => {
+            try {
+                const db = new mysqlClient_1.Database();
+                const row = db.connection.query(`SELECT * FROM comics.libreria WHERE idcomics = ${id}`, (error, events) => {
+                    if (events) {
+                        resolve(events);
+                    }
+                    else {
+                        reject(error);
+                    }
+                });
+            }
+            catch (error) {
+                console.error("Error al conectar a la base de datos:", error);
+            }
+        });
+    }
     async getAllEvents() {
+        //Aqui se trabaja mis metodos
         return await new Promise((resolve, reject) => {
             try {
                 //Instancia del objeto Database que contiene mi variable que hace la conexion a mi base de datos
@@ -28,6 +47,7 @@ class ComicRepository {
         return await new Promise((resolve, reject) => {
             try {
                 const db = new mysqlClient_1.Database();
+                /// Meter los parametros espera
                 const inserted = db.connection.query(`INSERT INTO comics.libreria(nombre, año) VALUES ('${nombre}','${año}')`, (error, comic) => {
                     if (comic) {
                         resolve(comic);
